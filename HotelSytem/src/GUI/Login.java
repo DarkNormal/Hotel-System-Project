@@ -92,7 +92,7 @@ public class Login extends JFrame implements ActionListener,MouseListener{
 		String sqlStatement = "SELECT User_ID, UserPassword,UserType FROM Users";
 		
 		try {
-			q.open("local");
+			q.open();
 			// Send the statement to the DBMS.
 			stmt = q.getConn().createStatement();
 			

@@ -152,7 +152,7 @@ public class CreateAccount extends JFrame implements ActionListener {
 
 				// Add information to the database
 
-				User u = new User(fname.getText(), lname.getText(),
+				User u = new User(username.getText() ,fname.getText(), lname.getText(),
 						address.getText(), email.getText(), phone.getText(),
 						username.getText(), password.getText());
 
