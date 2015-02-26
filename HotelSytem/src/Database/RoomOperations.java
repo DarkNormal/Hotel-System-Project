@@ -1,7 +1,7 @@
 package Database;
 /**
- * @author Derek Mulhern
- * @author Thomas Murphy
+ * Derek Mulhern
+ * Thomas Murphy
  */
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -77,7 +77,7 @@ public class RoomOperations {
 			catch(Exception ae){
 				JOptionPane.showMessageDialog(null, "Room already exists","Error adding room",JOptionPane.WARNING_MESSAGE);
 				System.out.println("room already exists ");
-//				ae.printStackTrace();
+				//ae.printStackTrace();
 			}
 			q.close();
 			return added;

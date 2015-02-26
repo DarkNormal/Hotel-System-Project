@@ -1,9 +1,10 @@
 package Database;
+
 /**
- * @author Derek Mulhern
- * @author Robert Kenny 
- * @author Thomas Murphy
- * @author Mark Lordan
+ * Derek Mulhern
+ * Robert Kenny 
+ * Thomas Murphy
+ * Mark Lordan
  */
 import java.sql.*;
 import java.sql.Date;
@@ -22,12 +23,12 @@ public class CreateTables {
 	private Queries q = new Queries();
 	private Hotel h;
 	private String dayString, monthString, yearString, dayString2,
-	monthString2, yearString2;
+			monthString2, yearString2;
 	private int day, month, year, day2, month2, year2;
 
 	/*
 	 * This method helps out when inserting dates into the database using
-	 * prepared statements that include sequences ** Reference Ms. Patricia Magee **
+	 * prepared statements that includes sequences
 	 */
 	public java.sql.Date convertDate(int day, int month, int year) {
 		GregorianCalendar cal = (GregorianCalendar) Calendar.getInstance();
@@ -364,8 +365,10 @@ public class CreateTables {
 			pstmt.setInt(2, 7);
 			pstmt.setInt(3, 1);
 			pstmt.setDouble(4, 1393);
-			pstmt.setDate(5, convertDate(29, 10, 2014)); // 10 represents November
-			pstmt.setDate(6, convertDate(6, 11, 2014)); // 11 represents December
+			pstmt.setDate(5, convertDate(29, 10, 2014)); // 10 represents
+															// November
+			pstmt.setDate(6, convertDate(6, 11, 2014)); // 11 represents
+														// December
 			pstmt.setString(7, "03");
 			pstmt.executeUpdate();
 
@@ -430,15 +433,13 @@ public class CreateTables {
 		} catch (SQLException ex) {
 			System.out.println("ERROR:  buildTitanFallTables "
 					+ ex.getMessage());
-			ex.printStackTrace();
+			// ex.printStackTrace();
 		}
 		q.close();
 	}
-	
-	/**
-	 * This method returns the last booking id currently in the database
-	 * which is incremented by 1 to make a booking in the add booking method
-	 */
+
+	// this method returns the last booking id currently in the database
+	// which is incremented by 1 to make a booking in the add booking method
 	public int getLastRow() {
 		q.open();
 		String sqlStatement = "SELECT * FROM bookings ORDER BY Booking_ID";
@@ -460,8 +461,8 @@ public class CreateTables {
 	}
 
 	/*
-	 * This method returns titanfall towers hotel as a hotel object which will be used to get 
-	 * the users of titanfall
+	 * this method returns titanfall towers hotel as a hotel object which will
+	 * be used to get the users of titanfall
 	 */
 	public Hotel getHotel() {
 		String hotelsqlS = "SELECT * FROM Hotels";
@@ -485,10 +486,9 @@ public class CreateTables {
 		q.close();
 		return h;
 	}
-	
+
 	/*
-	 * Here an array list of users within the titanfall hotel is passed back.
-	 * 
+	 * here an array list of users within the titanfall hotel is passed back.
 	 */
 	public ArrayList<User> getUsers() {
 		String sqlStatement = "SELECT * FROM Users";
@@ -528,45 +528,45 @@ public class CreateTables {
 	}
 
 	/*
-	 * The number of guests is calculated by using the rooms the user has chosen
-	 * any room the user has booked that is a single will result in 1 guest
-	 * any room the user has booked that is a double will result in 2 guests
-	 * any room the user has booked that is a twin will result in 4 guests
-	 * the number of guests will be added to a variable which will hold the total number of guests
+	 * the number of guests is calculated by using the rooms the user has chosen
+	 * any room the user has booked that is a single will result in 1 guest any
+	 * room the user has booked that is a double will result in 2 guests any
+	 * room the user has booked that is a twin will result in 4 guests the
+	 * number of guests will be added to a variable which will hold the total
+	 * number of guests
 	 */
-	
-	public int calculateNumGuests(ArrayList<Integer> roomChoice){
+
+	public int calculateNumGuests(ArrayList<Integer> roomChoice) {
 		int numGuests = 0;
-		try{
-			//q.open();
+		try {
+			// q.open();
 			stmt = q.getConn().createStatement();
 			for (int i = 0; i < roomChoice.size(); i++) {
-				String sqlGuests = "SELECT TYPE_ID FROM ROOMS WHERE ROOM_NUMBER = " + roomChoice.get(i);
+				String sqlGuests = "SELECT TYPE_ID FROM ROOMS WHERE ROOM_NUMBER = "
+						+ roomChoice.get(i);
 				rset = stmt.executeQuery(sqlGuests);
-				while(rset.next()){
-					if(rset.getInt(1) == 900){
+				while (rset.next()) {
+					if (rset.getInt(1) == 900) {
 						numGuests = numGuests + 1;
-					}
-					else if(rset.getInt(1) == 901){
+					} else if (rset.getInt(1) == 901) {
 						numGuests = numGuests + 2;
-					}
-					else 
+					} else
 						numGuests = numGuests + 4;
-					}
 				}
-				
 			}
-		catch (Exception se) {
+
+		} catch (Exception se) {
 			System.out.println("Error calculating number of guests " + se);
-			//se.printStackTrace();
+			// se.printStackTrace();
 		}
 		return numGuests;
-		}
-	
+	}
+
 	/*
-	 * the arrival and departure dates are passed to here as strings.
-	 * these strings containing the dates are split into 3 seperate substrings for day month and year
-	 * decision values used to distinguish between editing a booking or making a new booking
+	 * the arrival and departure dates are passed to here as strings. these
+	 * strings containing the dates are split into 3 seperate substrings for day
+	 * month and year decision is used to distiguish between update booking and
+	 * creating a new booking
 	 */
 	public void addBooking(Booking b, ArrayList<Integer> roomChoice,
 			int decision) {
@@ -592,7 +592,8 @@ public class CreateTables {
 		year2 = Integer.parseInt(yearString2);
 		for (int i = 0; i < roomChoice.size(); i++) {
 			System.out.println(roomChoice.get(i) + " is a room number booked");
-			System.out.println(b.getNumRooms() + " is the number of rooms we have tried to book");
+			System.out.println(b.getNumRooms()
+					+ " is the number of rooms we have tried to book");
 		}
 		try {
 			q.open();
@@ -600,17 +601,24 @@ public class CreateTables {
 
 			pstmt = q.getConn().prepareStatement(sql);
 			if (decision == 1) {
-				pstmt.setInt(1, (b.getBookingID() + 1)); //used for creating a new booking (continues sequnces)
+				pstmt.setInt(1, (b.getBookingID() + 1)); // used for creating a
+															// new booking
 			} else {
-				pstmt.setInt(1, (b.getBookingID()));  //this else is used for editing a booking so booking id is 
-													//not incremented
+				pstmt.setInt(1, (b.getBookingID())); // this else is used for
+														// editing a booking so
+														// booking id is
+														// not incremented
 			}
-			pstmt.setInt(2, calculateNumGuests(roomChoice));
+			pstmt.setInt(2, calculateNumGuests(roomChoice)); // calculates
+																// number of
+																// guests using
+																// room types
 			pstmt.setInt(3, b.getNumNights());
 			pstmt.setInt(4, b.getNumRooms());
 			pstmt.setDouble(5, b.getTotalCost());
 			pstmt.setDate(6, convertDate(day, month, year)); // Arrival Date
-			pstmt.setDate(7, convertDate(day2, month2, year2)); // Departure Date
+			pstmt.setDate(7, convertDate(day2, month2, year2)); // Departure
+																// Date
 			pstmt.setInt(8, 2222);
 			pstmt.setString(9, b.getUserID());
 
@@ -623,7 +631,8 @@ public class CreateTables {
 
 			for (int i = 0; i < roomChoice.size(); i++) {
 				pstmt.setInt(1, roomChoice.get(i));
-				if (decision == 1) {							//DECIDES BETWEEN EDITING A BOOKING OR MAKING A NEW BOOKING
+				if (decision == 1) { // DECIDES BETWEEN EDITING A BOOKING OR
+										// MAKING A NEW BOOKING
 					pstmt.setInt(2, (b.getBookingID() + 1));
 				} else {
 					pstmt.setInt(2, (b.getBookingID()));
@@ -631,21 +640,22 @@ public class CreateTables {
 				pstmt.setDate(
 						3,
 						convertDate(cal.get(Calendar.DAY_OF_MONTH),
-								cal.get(Calendar.MONTH), cal.get(Calendar.YEAR))); 
+								cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)));
 				pstmt.executeUpdate();
-				System.out.println("Print statement to check if new bookings works");
+				System.out
+						.println("Print statement to check if new bookings works");
 			}
 		} catch (Exception se) {
 			System.out.println("Error creating a booking " + se);
-			//se.printStackTrace();
+			// se.printStackTrace();
 		}
 		q.close();
 	}
-	/*
-	 * updates rooms in roombookings associated with booking ID
-	 * takes in new room choice
-	 */
 
+	/*
+	 * method to update rooms in a booking takes new roomChoice and deletes
+	 * previous choice
+	 */
 	public void updateBookingRooms(Booking b, ArrayList<Integer> roomChoice) {
 		try {
 			q.open();
@@ -655,7 +665,13 @@ public class CreateTables {
 
 			String sql = "UPDATE bookings SET  NUMBER_OF_ROOMS = "
 					+ roomChoice.size() + ", total_cost = " + b.getTotalCost()
-					+ ", NUMBER_OF_GUESTS = " + calculateNumGuests(roomChoice)
+					+ ", NUMBER_OF_GUESTS = " + calculateNumGuests(roomChoice) // calculates
+																				// number
+																				// of
+																				// guests
+																				// using
+																				// room
+																				// types
 					+ " WHERE BOOKING_ID = " + b.getBookingID();
 
 			stmt = q.getConn().createStatement();
@@ -691,7 +707,8 @@ public class CreateTables {
 
 	/*
 	 * This will update the number of guests, number of nights, and the dates of
-	 * the bookingNeeds to check availability of the rooms if they want to stay
+	 * the booking
+	 * Needs to check availability of the rooms if they want to stay
 	 * longer than originally requested or if they change the arrival date
 	 * Otherwise just overwrite the departure
 	 */
@@ -703,11 +720,7 @@ public class CreateTables {
 			departureDate.add(Calendar.DAY_OF_MONTH, b.getNumNights());
 			q.open();
 			stmt = q.getConn().createStatement();
-			/*
-			 * keeps original booking in case of failure, 
-			 * in which case original booking is added back into the db
-			 */
-			Booking origB = new Booking(); 
+			Booking origB = new Booking();
 			String origBooking = "SELECT * FROM BOOKINGS WHERE BOOKING_ID = "
 					+ b.getBookingID();
 			rset = stmt.executeQuery(origBooking);
@@ -743,16 +756,17 @@ public class CreateTables {
 				int i = rset.getInt("ROOM_NUMBER"); // use availability query in
 													// Queries with arrival and
 													// numNights
-				System.out.println(i + " is a room booked for the selected booking");
+				System.out.println(i
+						+ " is a room booked for the selected booking");
 				currentRooms.add(i);
 			}
-			//must delete and then re-add to all tables with foreign keys
-			String tempGetSpecials = "SELECT S.SPECIAL_ID ,S.SPECIAL_COST FROM SPECIALBOOKINGS SB, SPECIALS S WHERE BOOKING_ID = " + origB.getBookingID()
-										+ " AND S.SPECIAL_ID = SB.SPECIAL_ID";
+			String tempGetSpecials = "SELECT S.SPECIAL_ID ,S.SPECIAL_COST FROM SPECIALBOOKINGS SB, SPECIALS S WHERE BOOKING_ID = "
+					+ origB.getBookingID()
+					+ " AND S.SPECIAL_ID = SB.SPECIAL_ID";
 			rset = stmt.executeQuery(tempGetSpecials);
 			ArrayList<Integer> specialsBooked = new ArrayList<Integer>();
 			ArrayList<Double> specialsCostBooked = new ArrayList<Double>();
-			while(rset.next()){
+			while (rset.next()) {
 				specialsBooked.add(rset.getInt(1));
 				specialsCostBooked.add(rset.getDouble(2));
 			}
@@ -770,24 +784,33 @@ public class CreateTables {
 			int count = 0;
 			for (int i = 0; i < currentRooms.size(); i++) {
 				for (int j = 0; j < availableRooms.size(); j++) {
-					if (availableRooms.get(j).getRoomNumber() == currentRooms.get(i)) {
+					if (availableRooms.get(j).getRoomNumber() == currentRooms
+							.get(i)) {
 						System.out.println("hooray");
-						count++;    //count should be equal to the number of rooms the user is trying to add
-									// if not then a room is unavailable, update cancelled (below)
+						count++;
 
 					}
 
 				}
 			}
-			newArrival.add(Calendar.DATE, -b.getNumNights()); //arrival gets set to departure date after this query because they're connected
-															// minus number of nights to reset it
+			newArrival.add(Calendar.DATE, -b.getNumNights()); // arrival gets
+																// set to
+																// departure
+																// date after
+																// this query
+																// because
+																// they're
+																// connected
+																// minus number
+																// of nights to
+																// reset it
 			System.out.println(count + " is the count");
 			q.close();
 			addBooking(origB, currentRooms, 2);
 			q.open();
 			sql = "INSERT INTO SPECIALBOOKINGS VALUES(?,?,?)";
 			pstmt = q.getConn().prepareStatement(sql);
-			int counter =0;
+			int counter = 0;
 			for (int i = 0; i < specialsBooked.size(); i++) {
 				counter++;
 				pstmt.setInt(1, counter);
@@ -808,22 +831,31 @@ public class CreateTables {
 			}
 			if (count < currentRooms.size()) {
 				JOptionPane.showMessageDialog(null,
-						"One or more rooms unavailable for the selected dates");	
-			}
-			else{
-				System.out.println(b.getTotalCost() + " should be a total cost");
+						"One or more rooms unavailable for the selected dates");
+			} else {
+				System.out
+						.println(b.getTotalCost() + " should be a total cost");
 				String updateSQL = "UPDATE bookings SET  NUMBER_OF_GUESTS = "
 						+ origB.getNumGuests() + ", NUMBER_OF_NIGHTS = "
 						+ b.getNumNights() + ", TOTAL_COST = "
-						+ b.getTotalCost() 
-						+ ", ARRIVALDATE =  TO_DATE('" + newArrival.get(Calendar.YEAR)+"/" + (newArrival.get(Calendar.MONTH) +1) + "/"+ newArrival.get(Calendar.DAY_OF_MONTH)+ "','YYYY/MM/DD')"
-						+ ", DEPARTUREDATE = TO_DATE('" + departureDate.get(Calendar.YEAR)+"/" + (departureDate.get(Calendar.MONTH) +1) + "/"+ departureDate.get(Calendar.DAY_OF_MONTH)+ "','YYYY/MM/DD')"
-						+ " WHERE BOOKING_ID = "+ b.getBookingID();
+						+ b.getTotalCost() + ", ARRIVALDATE =  TO_DATE('"
+						+ newArrival.get(Calendar.YEAR) + "/"
+						+ (newArrival.get(Calendar.MONTH) + 1) + "/"
+						+ newArrival.get(Calendar.DAY_OF_MONTH)
+						+ "','YYYY/MM/DD')" + ", DEPARTUREDATE = TO_DATE('"
+						+ departureDate.get(Calendar.YEAR) + "/"
+						+ (departureDate.get(Calendar.MONTH) + 1) + "/"
+						+ departureDate.get(Calendar.DAY_OF_MONTH)
+						+ "','YYYY/MM/DD')" + " WHERE BOOKING_ID = "
+						+ b.getBookingID();
 				stmt = q.getConn().createStatement();
 				stmt.executeUpdate(updateSQL);
-				System.out.println("No overlap of rooms found. Booking updated ");
+				System.out
+						.println("No overlap of rooms found. Booking updated ");
 			}
+
 		}
+
 		catch (Exception e) {
 			System.out.println("Update booking error " + e);
 			e.printStackTrace();

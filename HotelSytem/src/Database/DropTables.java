@@ -1,6 +1,6 @@
 package Database;
 /**
- * @author Derek Mulhern
+ * Derek Mulhern
  */
 import java.sql.*;
 
