@@ -20,12 +20,23 @@ public class Queries {
 				// open local DB
 				OracleDataSource ods = new OracleDataSource();
 //				ods.setURL("jdbc:oracle:thin:@//10.10.2.7:1521/global1");
-//				ods.setUser("X00100551");
-//				ods.setPassword("db29Nov93");
-
+//				ods.setUser("IT Tallaght username");
+//				ods.setPassword("IT Tallaght Oracle password");
+/*
+ * This project uses JDBC with a local Oracle database
+ * Once Oracle XE has been installed and a user created
+ * Add the username and password to the user/password 
+ * fields below. This will allow you to use the project.
+ * 
+ * If you're a student of IT Tallaght and are using this project on the 
+ * college computers, use the user/password combo above that is commented out
+ * (Your student number and oracle user password)
+ * 
+ * 
+ * */
 				ods.setURL("jdbc:oracle:thin:HR/@localhost:1521:XE");
-				ods.setUser("toor");
-				ods.setPassword("root");
+				ods.setUser("YOUR USERNAME HERE");
+				ods.setPassword("YOUR PASSWORD HERE");
 
 				conn = ods.getConnection();
 
